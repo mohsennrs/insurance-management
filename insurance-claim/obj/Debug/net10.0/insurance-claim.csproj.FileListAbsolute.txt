@@ -224,3 +224,7 @@
 /Users/mnurisa/codes/asp.net/insurance-claim/obj/Debug/net10.0/ref/insurance-claim.dll
 /Users/mnurisa/codes/asp.net/insurance-claim/bin/Debug/net10.0/Npgsql.dll
 /Users/mnurisa/codes/asp.net/insurance-claim/bin/Debug/net10.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
+/Users/mnurisa/codes/asp.net/insurance-claim/obj/Debug/net10.0/insurance-claim.MvcApplicationPartsAssemblyInfo.cs
+/Users/mnurisa/codes/asp.net/insurance-claim/bin/Debug/net10.0/Microsoft.AspNetCore.OpenApi.dll
+/Users/mnurisa/codes/asp.net/insurance-claim/bin/Debug/net10.0/Microsoft.OpenApi.dll
+/Users/mnurisa/codes/asp.net/insurance-claim/bin/Debug/net10.0/Scalar.AspNetCore.dll
