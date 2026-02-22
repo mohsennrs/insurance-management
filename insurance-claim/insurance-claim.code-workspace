@@ -2,6 +2,12 @@
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"path": "../document-management-service"
+		},
+		{
+			"path": "../shared-messaging"
 		}
 	],
 	"settings": {}

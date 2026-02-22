@@ -1,24 +1,30 @@
 using Microsoft.EntityFrameworkCore;
 using insurance_claim.Data;
 using insurance_claim.Models;
-
+using shared_messaging;
+using shared_messaging.Events;
 namespace insurance_claim.Services;
 
 public class ClaimsService : IClaimsService
 {
     private readonly ClaimsDbContext _context;
     private readonly ILogger<ClaimsService> _logger;
+    private readonly IEventBus? _eventBus;
 
-    public ClaimsService(ClaimsDbContext context, ILogger<ClaimsService> logger)
+    public ClaimsService(
+        ClaimsDbContext context,
+        ILogger<ClaimsService> logger,
+        IEventBus? eventBus = null)
     {
         _context = context;
         _logger = logger;
+        _eventBus = eventBus;
     }
 
     public async Task<ClaimResponseDto?> GetByIdAsync(Guid id)
     {
         var claim = await _context.Claims.FindAsync(id);
-        
+
         if (claim == null)
         {
             _logger.LogWarning("Claim with ID {ClaimId} not found", id);
@@ -88,8 +94,27 @@ public class ClaimsService : IClaimsService
         _context.Claims.Add(claim);
         await _context.SaveChangesAsync();
 
-        _logger.LogInformation("Created new claim with ID {ClaimId} and number {ClaimNumber}", 
+        _logger.LogInformation("Created new claim with ID {ClaimId} and number {ClaimNumber}",
             claim.Id, claim.ClaimNumber);
+
+        // Publish event
+        _logger.LogInformation("Eventbus is available: {EventBusAvailable}", _eventBus != null);
+        if (_eventBus != null)
+        {
+            var @event = new ClaimCreatedEvent
+            {
+                ClaimId = claim.Id,
+                ClaimNumber = claim.ClaimNumber,
+                PolicyNumber = claim.PolicyNumber,
+                ClaimType = claim.ClaimType.ToString(),
+                ClaimAmount = claim.ClaimAmount,
+                ClaimantName = claim.ClaimantName,
+                ClaimantEmail = claim.ClaimantEmail
+            };
+
+            await _eventBus.PublishAsync(@event);
+            _logger.LogInformation("Published ClaimCreatedEvent for claim {ClaimId}", claim.Id);
+        }
 
         return MapToResponseDto(claim);
     }
@@ -97,17 +122,21 @@ public class ClaimsService : IClaimsService
     public async Task<ClaimResponseDto?> UpdateAsync(Guid id, UpdateClaimDto updateDto)
     {
         var claim = await _context.Claims.FindAsync(id);
-        
+
         if (claim == null)
         {
             _logger.LogWarning("Claim with ID {ClaimId} not found for update", id);
             return null;
         }
 
+        var oldStatus = claim.Status;
+        var statusChanged = false;
+
         // Update only provided fields
-        if (updateDto.Status.HasValue)
+        if (updateDto.Status.HasValue && updateDto.Status.Value != oldStatus)
         {
             claim.Status = updateDto.Status.Value;
+            statusChanged = true;
         }
 
         if (updateDto.ClaimAmount.HasValue)
@@ -136,13 +165,31 @@ public class ClaimsService : IClaimsService
 
         _logger.LogInformation("Updated claim with ID {ClaimId}", id);
 
+        // Publish status changed event
+        if (_eventBus != null && statusChanged)
+        {
+            var @event = new ClaimStatusChangedEvent
+            {
+                ClaimId = claim.Id,
+                ClaimNumber = claim.ClaimNumber,
+                OldStatus = oldStatus.ToString(),
+                NewStatus = claim.Status.ToString(),
+                ChangedBy = claim.AssignedTo
+            };
+
+            await _eventBus.PublishAsync(@event);
+            _logger.LogInformation(
+                "Published ClaimStatusChangedEvent for claim {ClaimId}: {OldStatus} → {NewStatus}",
+                claim.Id, oldStatus, claim.Status);
+        }
+
         return MapToResponseDto(claim);
     }
 
     public async Task<bool> DeleteAsync(Guid id)
     {
         var claim = await _context.Claims.FindAsync(id);
-        
+
         if (claim == null)
         {
             _logger.LogWarning("Claim with ID {ClaimId} not found for deletion", id);

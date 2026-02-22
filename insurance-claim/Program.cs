@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using insurance_claim.Data;
 using Scalar.AspNetCore;
-
+using shared_messaging.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +13,11 @@ builder.Services.AddDbContext<ClaimsDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 // Register ClaimsService for DI
+var rabbitMQConnectionString = builder.Configuration["RabbitMQ:ConnectionString"];
+if (!string.IsNullOrEmpty(rabbitMQConnectionString))
+{
+    builder.Services.AddRabbitMQEventBus(builder.Configuration, "claimflow-events");
+}
 builder.Services.AddScoped<insurance_claim.Services.IClaimsService, insurance_claim.Services.ClaimsService>();
 
 // Add services to the container.

@@ -1,0 +1,12 @@
+/Users/mnurisa/codes/asp.net/shared-messaging/bin/Debug/net10.0/shared-messaging.deps.json
+/Users/mnurisa/codes/asp.net/shared-messaging/bin/Debug/net10.0/shared-messaging.dll
+/Users/mnurisa/codes/asp.net/shared-messaging/bin/Debug/net10.0/shared-messaging.pdb
+/Users/mnurisa/codes/asp.net/shared-messaging/obj/Debug/net10.0/shared-messaging.csproj.AssemblyReference.cache
+/Users/mnurisa/codes/asp.net/shared-messaging/obj/Debug/net10.0/shared-messaging.GeneratedMSBuildEditorConfig.editorconfig
+/Users/mnurisa/codes/asp.net/shared-messaging/obj/Debug/net10.0/shared-messaging.AssemblyInfoInputs.cache
+/Users/mnurisa/codes/asp.net/shared-messaging/obj/Debug/net10.0/shared-messaging.AssemblyInfo.cs
+/Users/mnurisa/codes/asp.net/shared-messaging/obj/Debug/net10.0/shared-messaging.csproj.CoreCompileInputs.cache
+/Users/mnurisa/codes/asp.net/shared-messaging/obj/Debug/net10.0/shared-messaging.dll
+/Users/mnurisa/codes/asp.net/shared-messaging/obj/Debug/net10.0/refint/shared-messaging.dll
+/Users/mnurisa/codes/asp.net/shared-messaging/obj/Debug/net10.0/shared-messaging.pdb
+/Users/mnurisa/codes/asp.net/shared-messaging/obj/Debug/net10.0/ref/shared-messaging.dll
