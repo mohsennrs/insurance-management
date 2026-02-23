@@ -10,3 +10,4 @@
 /Users/mnurisa/codes/asp.net/shared-messaging/obj/Debug/net10.0/refint/shared-messaging.dll
 /Users/mnurisa/codes/asp.net/shared-messaging/obj/Debug/net10.0/shared-messaging.pdb
 /Users/mnurisa/codes/asp.net/shared-messaging/obj/Debug/net10.0/ref/shared-messaging.dll
+/Users/mnurisa/codes/asp.net/shared-messaging/obj/Debug/net10.0/shared-messaging.sourcelink.json
